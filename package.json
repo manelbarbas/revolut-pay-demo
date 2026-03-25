@@ -1,0 +1,43 @@
+{
+  "name": "revolut-task",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev:server": "node --loader ts-node/esm server/api/index.ts",
+    "dev:client": "vite client",
+    "build:client": "vite build client",
+    "build": "tsc && npm run build:client",
+    "start": "node dist/server/index.js",
+    "watch": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@revolut/checkout": "^1.1.25",
+    "@types/node": "^25.5.0",
+    "better-sqlite3": "^12.8.0",
+    "body-parser": "^2.2.2",
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/body-parser": "^1.19.6",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.6",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/typescript": "^0.4.29",
+    "@vitejs/plugin-react": "^6.0.1"
+  }
+}

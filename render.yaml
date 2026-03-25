@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: revolut-pay-demo
+    env: node
+    buildCommand: npm run build
+    startCommand: node dist/server/api/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5177
+      - key: REVOLUT_API_URL
+        sync: false
+      - key: REVOLUT_API_PUBLIC_KEY
+        sync: false
+      - key: REVOLUT_API_SECRET_KEY
+        sync: false
+      - key: REVOLUT_WEBHOOK_SECRET
+        sync: false
+      - key: STATIC_DIR
+        value: ./client/dist
