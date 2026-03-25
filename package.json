@@ -8,7 +8,7 @@
     "dev:server": "node --loader ts-node/esm server/api/index.ts",
     "dev:client": "vite client",
     "build:client": "vite build client",
-    "build": "tsc && npm run build:client",
+    "build": "npm install --include=dev && tsc && npm run build:client",
     "build:render": "npm install --include=dev && tsc && npm run build:client",
     "start": "node dist/server/api/index.js",
     "watch": "tsc --watch",
