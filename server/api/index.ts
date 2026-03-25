@@ -362,7 +362,12 @@ if (process.env.NODE_ENV === 'production') {
 
   // SPA fallback - serve index.html for all non-API routes
   // This enables client-side routing (/, /orders, /success, /failure, /cancel)
-  app.get('*', (req, res) => {
+  app.use((req, res, next) => {
+    // Skip API routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/webhook') || req.path === '/config') {
+      return next();
+    }
+    // Serve index.html for all other routes (SPA routing)
     res.sendFile(path.join(staticDir, 'index.html'));
   });
 
