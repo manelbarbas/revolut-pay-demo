@@ -355,12 +355,20 @@ app.get('/config', (req, res) => {
 // Serve static files in production (built React app)
 if (process.env.NODE_ENV === 'production') {
   const path = await import('path');
-  // Resolve staticDir relative to current working directory (repo root)
-  const staticDir = process.env.STATIC_DIR || './client/dist';
-  const staticDirAbsolute = path.resolve(process.cwd(), staticDir);
+  const url = await import('url');
+
+  // Get __dirname equivalent for ES modules
+  const __filename = url.fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+  // Resolve staticDir: use STATIC_DIR env var if set, otherwise use __dirname relative path
+  // __dirname is dist/server/api/, so we go up 3 levels to reach project root, then into client/dist
+  const clientDist = process.env.STATIC_DIR
+    ? path.resolve(process.cwd(), process.env.STATIC_DIR)
+    : path.join(__dirname, '../../../client/dist');
 
   // Serve static files (JS, CSS, images, etc.)
-  app.use(express.static(staticDirAbsolute));
+  app.use(express.static(clientDist));
 
   // SPA fallback - serve index.html for all non-API routes
   // This enables client-side routing (/, /orders, /success, /failure, /cancel)
@@ -370,10 +378,10 @@ if (process.env.NODE_ENV === 'production') {
       return next();
     }
     // Serve index.html for all other routes (SPA routing)
-    res.sendFile(path.join(staticDirAbsolute, 'index.html'));
+    res.sendFile(path.join(clientDist, 'index.html'));
   });
 
-  console.log(`[Static] Serving React app from: ${staticDirAbsolute}`);
+  console.log(`[Static] Serving React app from: ${clientDist}`);
 } else {
   // Development: 404 handler for API-only mode
   app.use((req, res) => {
