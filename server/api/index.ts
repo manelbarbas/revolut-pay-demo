@@ -360,7 +360,7 @@ if (process.env.NODE_ENV === 'production') {
   const staticDirAbsolute = path.resolve(process.cwd(), staticDir);
 
   // Serve static files (JS, CSS, images, etc.)
-  app.use(express.static(staticDir));
+  app.use(express.static(staticDirAbsolute));
 
   // SPA fallback - serve index.html for all non-API routes
   // This enables client-side routing (/, /orders, /success, /failure, /cancel)
