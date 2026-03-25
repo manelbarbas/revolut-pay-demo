@@ -355,9 +355,9 @@ app.get('/config', (req, res) => {
 // Serve static files in production (built React app)
 if (process.env.NODE_ENV === 'production') {
   const path = await import('path');
-  const staticDir = process.env.STATIC_DIR || '../client/dist';
-  // Resolve to absolute path for res.sendFile()
-  const staticDirAbsolute = path.resolve(staticDir);
+  // Resolve staticDir relative to current working directory (repo root)
+  const staticDir = process.env.STATIC_DIR || './client/dist';
+  const staticDirAbsolute = path.resolve(process.cwd(), staticDir);
 
   // Serve static files (JS, CSS, images, etc.)
   app.use(express.static(staticDir));
@@ -373,7 +373,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(staticDirAbsolute, 'index.html'));
   });
 
-  console.log(`[Static] Serving React app from: ${staticDir}`);
+  console.log(`[Static] Serving React app from: ${staticDirAbsolute}`);
 } else {
   // Development: 404 handler for API-only mode
   app.use((req, res) => {
