@@ -46,8 +46,9 @@ export interface PaymentDetails {
  * Initialize database schema
  */
 export function initDatabase(): void {
-  // Check if we need to migrate (add new columns)
+  // Check if table already exists (for migration purposes)
   const tableInfo = db.pragma('table_info(orders)') as Array<{ cid: number; name: string }>;
+  const tableExists = tableInfo.length > 0;
   const hasPaymentState = tableInfo.some(col => col.name === 'payment_state');
   const hasPaymentId = tableInfo.some(col => col.name === 'payment_id');
 
@@ -75,14 +76,16 @@ export function initDatabase(): void {
     CREATE INDEX IF NOT EXISTS idx_internal_id ON orders(id);
   `);
 
-  // Migration: Add new columns if they don't exist (for existing databases)
-  if (!hasPaymentState) {
-    console.log('[DB] Migrating: Adding payment_state column');
-    db.exec('ALTER TABLE orders ADD COLUMN payment_state TEXT');
-  }
-  if (!hasPaymentId) {
-    console.log('[DB] Migrating: Adding payment_id column');
-    db.exec('ALTER TABLE orders ADD COLUMN payment_id TEXT');
+  // Migration: Add new columns if they don't exist (only for existing databases)
+  if (tableExists) {
+    if (!hasPaymentState) {
+      console.log('[DB] Migrating: Adding payment_state column');
+      db.exec('ALTER TABLE orders ADD COLUMN payment_state TEXT');
+    }
+    if (!hasPaymentId) {
+      console.log('[DB] Migrating: Adding payment_id column');
+      db.exec('ALTER TABLE orders ADD COLUMN payment_id TEXT');
+    }
   }
 
   console.log('[DB] Database initialized at:', dbPath);
