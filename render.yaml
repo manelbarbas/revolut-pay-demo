@@ -2,7 +2,7 @@ services:
   - type: web
     name: revolut-pay-demo
     env: node
-    buildCommand: npm install --also=dev && npm run build
+    buildCommand: npm install && npm run build
     startCommand: node dist/server/api/index.js
     envVars:
       - key: NODE_ENV
