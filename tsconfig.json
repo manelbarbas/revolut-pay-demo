@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "rootDir": "./",
     "moduleResolution": "NodeNext",
+    "types": ["node"],
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
