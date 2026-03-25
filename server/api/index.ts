@@ -356,6 +356,8 @@ app.get('/config', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   const path = await import('path');
   const staticDir = process.env.STATIC_DIR || '../client/dist';
+  // Resolve to absolute path for res.sendFile()
+  const staticDirAbsolute = path.resolve(staticDir);
 
   // Serve static files (JS, CSS, images, etc.)
   app.use(express.static(staticDir));
@@ -368,7 +370,7 @@ if (process.env.NODE_ENV === 'production') {
       return next();
     }
     // Serve index.html for all other routes (SPA routing)
-    res.sendFile(path.join(staticDir, 'index.html'));
+    res.sendFile(path.join(staticDirAbsolute, 'index.html'));
   });
 
   console.log(`[Static] Serving React app from: ${staticDir}`);
