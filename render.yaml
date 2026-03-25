@@ -3,7 +3,7 @@ services:
     name: revolut-pay-demo
     env: node
     buildCommand: npm run build:render
-    startCommand: node dist/api/index.js
+    startCommand: node dist/server/api/index.js
     envVars:
       - key: NODE_ENV
         value: production
